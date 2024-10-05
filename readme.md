@@ -17,7 +17,8 @@ GoMockAPI is a flexible API mocking tool built in Go that allows you to mock RES
  
 # Docker Image
 
-- onlysumitg/gomockapi
+- docker push onlysumitg/gomockapi:tagname
+
 
 # Installation
 1. Make sure you have Go installed on your system. If not, download it from https://go.dev/dl/
