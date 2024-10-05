@@ -1,0 +1,84 @@
+{{define "title"}}
+Response Parameters
+{{end}}
+
+{{define "content"}}
+
+
+<div class="row p-2">
+  <div class="col">
+    <div class="card" >
+      <div class="card-header">
+        <p class="h5">
+          Response Parameters</p>
+      </div>
+      <div class="card-body" style="overflow:scroll">
+        <table id="responseparamlist"
+        class="table   table-borderless table-responsive-sm table-striped    ">
+        <thead class="thead-dark">
+            <tr>
+              <th>Options</th>
+              <th>Key</th>
+              <th><span>Default Datatype</span></th>
+              <th>Override Value </th>
+              <th><span>Default Value</span></th>
+
+            </tr>
+          </thead>
+          <tbody>
+            {{if .ResponseParams}}
+
+            {{range .ResponseParams}}
+            <tr>
+
+              <td>
+
+                <a data-toggle="tooltip" data-placement="bottom" title="Change value"  class="btn btn-ghost-info" href='/responseparam/{{$.EndPoint.ID}}/{{$.ResponseParamsOwnerId}}/update/{{.ID}}'> 
+                  <svg class="c-icon">
+                  <use xlink:href="/static/coreui/vendors/coreui/icons/svg/free.svg#cil-pencil"></use></svg>
+                
+                </a>
+
+              </td>
+
+              <td>{{.Key}}</td>
+
+              <td>{{.DefaultDatatype}}</td>
+              <td>{{.OverrideValue}}</td>
+              <td>{{.DefaultValue}}</td>
+
+
+
+
+
+
+            </tr>
+            {{end}}
+            {{end}}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+{{end}}
+
+
+{{define "aftercontent"}}
+
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.css">
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.js"></script>
+
+<script>
+  $(document).ready(function () {
+    $('#responseparamlist').DataTable({
+      "pageLength": 100,
+      "language": {
+        "emptyTable": "No records."
+      }
+    });
+  });
+</script>
+{{end}}

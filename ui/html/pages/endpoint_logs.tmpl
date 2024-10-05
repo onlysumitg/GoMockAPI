@@ -1,0 +1,76 @@
+{{define "title"}}
+EndPoints
+{{end}}
+
+{{define "content"}}
+
+
+
+<div class="row p-2">
+  <div class="col">
+    <div class="card ">
+      <div class="card-header">
+        <p class="h5">EndPoints Logs</p>
+      </div>
+      <div class="card-body">
+        <table id="endpointlistlogs"
+          class="table   table-borderless table-responsive-sm table-striped">
+          <thead class="thead-dark">
+
+            <tr>
+              <th>ID</th>
+              <th>Called At</th>
+            
+
+            
+
+            </tr>
+          </thead>
+          <tbody>
+            {{if .EndPoint.EndPointCallLog}}
+
+            {{range .EndPoint.EndPointCallLog}}
+            <tr>
+              <td>
+                <a href="/apilogs/{{.CorellationID}}">
+                {{.CorellationID}}</a>
+              
+              </td>
+              <td>{{.CalledAt}}</td>
+              
+
+
+
+
+              
+
+            </tr>
+            {{end}}
+            {{end}}
+          </tbody>
+        </table>
+ 
+      </div>
+    </div>
+  </div>
+</div>
+    {{end}}
+
+
+    {{define "aftercontent"}}
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.css">
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.js">
+    </script>
+
+    <script>
+      $(document).ready(function () {
+        $('#endpointlistlogs').DataTable({
+          "pageLength": 100,
+          "language": {
+            "emptyTable": "No records."
+          }
+        });
+      });
+    </script>
+    {{end}}

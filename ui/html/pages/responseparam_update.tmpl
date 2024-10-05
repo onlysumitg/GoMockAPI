@@ -1,0 +1,168 @@
+{{define "title"}}
+Response Param
+{{end}}
+
+
+{{define "content"}}
+
+<div class="row p-2">
+    <div class="col-8">
+        <div class="card ">
+            <div class="card-header">
+                <p class="h5">
+                    Response Parameter</p>
+            </div>
+            <div class="card-body">
+                <table           class="table   table-borderless table-responsive-sm table-striped    ">
+                  
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>Key</th>
+                            <th><span>Default Value</span></th>
+                            <th><span>Default Datatype</span></th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>{{.Form.Key}}</td>
+                            <td>{{.Form.DefaultValue}}</td>
+
+                            <td>{{.Form.DefaultDatatype}}</td>
+
+                        </tr>
+                    </tbody>
+                </table>
+
+                <form autocomplete="off" action="/responseparam/{{.EndPoint.ID}}/{{.ResponseParamsOwnerId}}/update" method="POST">
+                    <input type="hidden" name="csrf_token" value="{{.CSRFToken}}">
+                    <input type="hidden" name="id" value="{{.Form.ID}}">
+
+                    <div class="form-group w-100">
+                        <label for="overridevalue">Override Default Value by:</label>
+                        <br />
+                        <input id="overridevalue" autocomplete="false"
+                            class="w-100 form-control {{with .Form.FieldErrors.overridevalue}} is-invalid {{end}}" type="text"
+                            name="overridevalue" aria-describedby="overridevaluehelp" placeholder=""
+                            value='{{.Form.OverrideValue}}'  ></input>
+
+                        <small id="overridevaluehelp" class="form-text text-muted">
+                            Override response parameter value by a literal value or Request parameter. Type "request" to
+                            list request parameters.
+                        </small>
+
+                        <!-- Use the `with` action to render the value of .Form.FieldErrors.title if it is not empty. -->
+
+                        {{with .Form.FieldErrors.overridevalue}}
+                        <div class='invalid-feedback'>{{.}}</div>
+                        {{end}}
+                    </div>
+
+
+
+
+
+
+
+
+
+
+
+                    <button type="submit" class="btn btn-info">                  <svg class="c-icon">
+                        <use xlink:href="/static/coreui/vendors/coreui/icons/svg/free.svg#cil-check-alt"></use></svg>
+                        Submit</button>
+
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-4">
+
+        <div class="card ">
+            <div class="card-header">
+                <p class="h5">Available Special values
+                </p>
+      
+                </div>
+              <div class="card-body">
+
+
+        <table id="availablespecialvals" 
+        class="table   table-borderless table-responsive-sm table-striped    ">
+        <thead class="thead-dark">
+            <tr>
+              <th>Special values</th>
+      
+               
+      
+            </tr>
+          </thead>
+          <tbody>
+            {{ range .RequestParamAutoComplateList}}
+            <tr>
+                <td>
+                    {{.}}
+                </td>
+            </tr>
+            {{end}}
+          </tbody>
+          </table>
+             
+    </div>     
+</div>
+    </div>
+</div>
+
+{{end}}
+
+
+{{define "aftercontent"}}
+
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.css">
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.js"></script>
+
+<style>
+    .autoComplete_wrapper{
+        width: 100%;
+    }
+</style>
+
+<script>
+
+    
+    $(document).ready(function () {
+
+
+
+
+        $('#availablespecialvals').DataTable({
+      "language": {
+        "emptyTable": "No records."
+      }
+    });
+
+
+
+        var valueAutoComplete = new autoComplete({
+            selector: "#overridevalue",
+            placeHolder: "",
+            data: {
+                src: {{.RequestParamAutoComplate}}.split(","),
+                cache: true,
+            },
+            resultItem: {
+                highlight: true,
+            },
+            events: {
+                input: {
+                    selection: (event) => {
+                        const selection = event.detail.selection.value;
+                        valueAutoComplete.input.value = selection;
+                    }
+                }
+            }
+        });
+
+    });
+</script>
+{{end}}

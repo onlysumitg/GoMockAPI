@@ -1,0 +1,411 @@
+{{define "title"}}
+EndPoint
+{{end}}
+
+
+{{define "content"}}
+<div class="row p-2">
+    <div class="col">
+        <div class="card ">
+            <div class="card-header">
+                <p class="h5">
+                    {{if .Form.ID}} Edit {{else}} Add {{end}} EndPoint
+                    {{if .Form.ID}} 
+                    <a id="manageresp"  data-toggle="tooltip" data-placement="bottom" title="Manage Responses"
+                    class="btn btn-ghost-info float-right" href="/epr/{{.Form.ID}}">Manage Responses</a></p>
+                    {{end}}
+                </p>
+            </div>
+            <div class="card-body">
+
+
+
+
+
+
+
+
+
+                {{if .Form.MockUrl}}
+                
+
+                <div class="alert alert-success" role="alert">
+                    URL to use: <strong>{{$.HostUrl}}/{{.Form.MockUrl}}</strong>
+                  </div>
+
+                {{end}}
+                <form action="/endpoints/{{if .Form.ID}}update/{{.Form.ID}}{{else}}add{{end}}" method="POST">
+                    <input type="hidden" name="csrf_token" value="{{.CSRFToken}}">
+                    <input type="hidden" name="id" value="{{.Form.ID}}">
+
+
+                    <div class="form-group">
+                        <label for="actualurl">API To Mock</label>
+                        <input id="actualurl"
+                            class="form-control {{with .Form.FieldErrors.actualurl}} is-invalid {{end}}" type="text"
+                            name="actualurl" aria-describedby="actualurlhelp" placeholder="http://somthing.com"
+                            value='{{.Form.ActualURL}}'></input>
+                        <small id="actualurlhelp"
+                            class="form-text text-muted">http://api.example.com/resource1/{pathPramValue:string}?a=2&b=xyz</small>
+
+                        <!-- Use the `with` action to render the value of .Form.FieldErrors.title if it is not empty. -->
+
+                        {{with .Form.FieldErrors.actualurl}}
+                        <div class='invalid-feedback'>{{.}}</div>
+                        {{end}}
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="endpointname">Local Name</label>
+                        <input id="endpointname" class="form-control {{with .Form.FieldErrors.name}} is-invalid {{end}}"
+                            type="text" name="name" aria-describedby="endpointnamehelp" placeholder="my_XYZ_Api"
+                            value='{{.Form.Name}}' required></input>
+
+                        <small id="endpointnamehelp" class="form-text text-muted">A local unique
+                            name</small>
+
+                        <!-- Use the `with` action to render the value of .Form.FieldErrors.title if it is not empty. -->
+
+                        {{with .Form.FieldErrors.name}}
+                        <div class='invalid-feedback'>{{.}}</div>
+                        {{end}}
+                    </div>
+
+
+                  
+                    <!-- <div class="form-check">
+                        <input value='true' {{if .Form.AutoUpdateRequest}} checked {{end}} type="checkbox"
+                            class=" form-check-input" name="autoupdaterequest" id="autoupdaterequest">
+                        <label class="form-check-label" for="autoupdaterequest">Keep updating Request
+                            parameters using
+                            incoming requests</label>
+                    </div>
+                    <br />
+                    <div class="form-check">
+                        <input value='true' {{if .Form.AutoUpdateResponse}} checked {{end}} type="checkbox"
+                            class=" form-check-input" name="autoupdateresponse" id="autoupdateresponse">
+                        <label class="form-check-label" for="autoupdateresponse">Update Response based on
+                            actual endpoint if
+                            its called</label>
+                    </div>
+
+                    <br />
+
+                    <br /> -->
+
+
+
+
+                    <div class="form-group">
+                        <label for="endpointmethod">Collection</label>
+
+
+                        <!-- Use the `with` action to render the value of .Form.FieldErrors.title if it is not empty. -->
+
+                        <SELECT class="form-control" name="collectionid">
+                            <OPTION   value="">Default:V1</OPTION>
+
+                            {{if .Collections}}
+                            {{range $i, $collection := .Collections}}
+                            <OPTION {{if eq $.Form.CollectionID $collection.ID }}selected{{end}} value="{{$collection.ID}}">{{$collection.Name}}</OPTION>
+
+                            {{end}}
+                            {{end}}
+
+                             
+                        </SELECT>
+
+
+                        {{with .Form.FieldErrors.collectionid}}
+                        <div class='invalid-feedback'>{{.}}</div>
+                        {{end}}
+
+
+                    </div>
+
+                    <div class="form-group">
+                        <label for="endpointmethod">HTTP Method</label>
+
+
+                        <!-- Use the `with` action to render the value of .Form.FieldErrors.title if it is not empty. -->
+
+                        <SELECT class="form-control" name="method">
+                            <OPTION {{if eq .Form.Method "POST" }}selected{{end}} value="POST">POST</OPTION>
+                            <OPTION {{if eq .Form.Method "GET" }}selected{{end}} value="GET">GET</OPTION>
+                            <OPTION {{if eq .Form.Method "PUT" }}selected{{end}} value="PUT">PUT</OPTION>
+                            <OPTION {{if eq .Form.Method "DELETE" }}selected{{end}} value="DELETE">DELETE</OPTION>
+                            <OPTION {{if eq .Form.Method "PATCH" }}selected{{end}} value="PATCH">PATCH</OPTION>
+
+                        </SELECT>
+
+
+                        {{with .Form.FieldErrors.method}}
+                        <div class='invalid-feedback'>{{.}}</div>
+                        {{end}}
+
+
+                    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    <div class="row">
+                        <div class="col p-3  "  >
+                            <div class="form-group">
+                                <label for="samplerequest">Sample Request[Not For GET]
+
+                                   
+                                </label>
+                                <!--   REQUEST TYPE XML od JSON   START-->
+
+                            
+                        <div class="alert alert-success" role="alert">
+                            
+                                <div class="row">
+                                    <div class="col">
+                                    
+                                        <div class="form-check">
+                                            <input class="form-check-input {{with .Form.FieldErrors.samplerequesttype}} is-invalid {{end}}" type="radio" name="samplerequesttype" 
+                                            id="samplerequesttypejson" 
+                                            value="JSON"
+                                            {{if or (eq .Form.SampleRequestType "JSON") (eq .Form.SampleRequestType "")}} checked {{end}} 
+                                             >
+                                            <label class="form-check-label" for="samplerequesttypejson">
+                                              JSON
+                                            </label>
+                                            {{with .Form.FieldErrors.samplerequesttype}}
+                                            <div class='invalid-feedback'>{{.}}</div>
+                                            {{end}}
+                                          </div>
+                                    </div>
+
+                                    <div class="col">
+                                        <div class="form-check">
+                                            <input class="form-check-input {{with .Form.FieldErrors.samplerequesttype}} is-invalid {{end}}" type="radio" 
+                                            name="samplerequesttype" id="samplerequesttypexml" 
+                                            value="XML"
+                                            {{if eq .Form.SampleRequestType "XML"}} checked {{end}} 
+                                            >
+                                            <label class="form-check-label" for="samplerequesttypexml">
+                                              XML
+                                            </label>
+                            
+                                          
+                                          </div>
+                                    </div>
+                                
+                                </div>
+                            </div>
+                            <!--   REQUEST TYPE XML od JSON   END-->
+
+
+<!-- 
+                            <div class="alert alert-secondary" role="alert">
+
+
+                                <div class="form-check">
+                                    <input value='true' {{if .Form.AppendReqParam}} checked {{end}} type="checkbox"
+                                        class=" form-check-input" name="appendrequest" id="appendrequest">
+                                    <label class="form-check-label" for="appendrequest">Append to existing
+                                        Request
+                                        params</label>
+                                </div>
+                                </div> -->
+
+                                
+                                <textarea name="samplerequest"
+                                    class="form-control {{with .Form.FieldErrors.samplerequest}} is-invalid {{end}}"
+                                    class="form-control" id="samplerequest" rows="10">{{.Form.SampleRequest}}</textarea>
+                                {{with .Form.FieldErrors.samplerequest}}
+                                <div class='invalid-feedback'>{{.}}</div>
+                                {{end}}
+                            </div>
+                        </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                        <div class="col p-3  "  >
+                            <div class="form-group">
+                                <label for="samplerequestheader">Sample Request Header</label>
+                           
+                                
+                      <!--   REQUEST HEADER TYPE XML od JSON   START-->
+                      <div class="alert alert-success" role="alert">
+                        <div class="row">
+                            <div class="col">
+
+                                <div class="form-check">
+                                    <input class="form-check-input {{with .Form.FieldErrors.samplerequestheadertype}} is-invalid {{end}}" 
+                                    type="radio" name="samplerequestheadertype" 
+                                    id="samplerequestheadertypejson" 
+                                    value="JSON"
+                                    {{if or (eq .Form.SampleRequestHeaderType "JSON") (eq .Form.SampleRequestHeaderType "")}} checked {{end}} 
+                                     >
+                                    <label class="form-check-label" for="samplerequestheadertypejson">
+                                      JSON
+                                    </label>
+                                    {{with .Form.FieldErrors.samplerequestheadertype}}
+                                    <div class='invalid-feedback'>{{.}}</div>
+                                    {{end}}
+                                  </div>
+                            </div>
+
+                            <div class="col">
+                                <div class="form-check">
+                                    <input class="form-check-input {{with .Form.FieldErrors.samplerequestheadertype}} is-invalid {{end}}" type="radio" 
+                                    name="samplerequestheadertype" id="samplerequestheadertypexml" 
+                                    value="XML"
+                                    {{if eq .Form.SampleRequestHeaderType "XML"}} checked {{end}} 
+                                    >
+                                    <label class="form-check-label" for="samplerequestheadertypexml">
+                                      XML
+                                    </label>
+                    
+                                  
+                                  </div>
+                            </div>
+                        
+                        </div>
+                    </div>
+                    <!--   REQUEST HEADER TYPE XML od JSON   END-->
+
+
+
+
+
+                                <!-- <div class="alert alert-secondary" role="alert">
+
+                                <div class="form-check">
+                                    <input value='true' {{if .Form.AppendReqHeader}} checked {{end}} type="checkbox"
+                                        class=" form-check-input" name="appendrequestheader" id="appendrequestheader">
+                                    <label class="form-check-label" for="appendrequestheader">Append to
+                                        existing Request
+                                        header</label>
+                                </div>
+                                </div> -->
+                              
+
+                                <textarea name="samplerequestheader"
+                                    class="form-control {{with .Form.FieldErrors.samplerequestheader}} is-invalid {{end}}"
+                                    class="form-control" id="samplerequestheader"
+                                    rows="10">{{.Form.SampleRequestHeader}}</textarea>
+                                {{with .Form.FieldErrors.samplerequestheader}}
+                                <div class='invalid-feedback'>{{.}}</div>
+                                {{end}}
+                            </div>
+                        </div>
+
+
+                    </div>
+
+
+                    <div class="form-check">
+                        <input value='true' {{if .Form.EnableLogging}} checked {{end}} type="checkbox"
+                            class=" form-check-input" name="enablelogging" id="enablelogging">
+                        <label class="form-check-label" for="enablelogging">Enable logging</label>
+                    </div>
+                    
+                        <br />
+                        <br />
+
+                    <button type="submit" class="btn btn-info">                  <svg class="c-icon">
+                        <use xlink:href="/static/coreui/vendors/coreui/icons/svg/free.svg#cil-check-alt"></use></svg>
+                        Submit</button>
+                </form>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+{{end}}
+
+
+
+{{define "aftercontent"}}
+ 
+
+<script>
+  $(document).ready(function () {
+     
+
+
+
+    {{if .Form.ID}}
+
+
+    introJs().setOptions({
+steps: [{
+title: 'Your End point is ready!',
+intro: 'Lets have a quick tour.'
+} ,
+
+{
+element: document.querySelector('#manageresp'),
+title: 'Manage Responses',
+intro: 'Click here to add or manage responses related to this endpoint.'
+},
+{
+element: document.querySelector('#responsemenu'),
+title: 'Manage Responses',
+intro: 'Or here'},
+{
+element: document.querySelector('#requestparammenu'),
+title: 'Request parameters',
+intro: 'Use this option to check request parameters and change default values.'
+},
+
+
+
+{
+element: document.querySelector('#conditionsmenu'),
+title: 'Conditions',
+intro: 'Use this option to add conditions.'
+},
+
+
+
+{
+element: document.querySelector('#conditionactionsmenu'),
+title: 'Condition Actions',
+intro: 'Add finally tell how to react when a condition passes'
+},
+
+]
+}).setOption("dontShowAgain", true).start();
+
+{{end}} 
+  });
+</script>
+
+
+
+{{end}}

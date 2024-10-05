@@ -1,0 +1,71 @@
+{{define "title"}}
+Condition Actions
+{{end}}
+
+{{define "content"}}
+ 
+  <div class="row p-2">
+    <div class="col">
+      <div class="card ">
+        <div class="card-header">
+          <p class="h5">Condition Actions
+            <a class="btn btn-ghost-info float-right" href="/conditiongroups/{{$.EndPoint.ID}}/add">+Add</a>
+    
+          </p>
+          <p><small>"Conditionally" modify the response and headers</small></p>
+  
+            </div>
+          <div class="card-body">
+
+  <table id="conditiongrouplist" 
+  class="table   table-borderless table-responsive-sm table-striped    ">
+  <thead class="thead-dark">
+      <tr>
+        <th>Name</th>
+
+        <th>Options</th>
+
+      </tr>
+    </thead>
+    <tbody>
+      {{if .ConditionGroups}}
+
+      {{range .ConditionGroups}}
+      <tr>
+        <td>{{.Name}} &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp </td>
+        <td>
+          <a data-toggle="tooltip" data-placement="bottom" title="Edit" class="btn btn-ghost-info" href='/conditiongroups/{{$.EndPoint.ID}}/update/{{.ID}}'>                  <svg class="c-icon">
+            <use xlink:href="/static/coreui/vendors/coreui/icons/svg/free.svg#cil-pencil"></use></svg></a>
+          <a data-toggle="tooltip" data-placement="bottom" title="Delete" class="btn   btn-ghost-danger" href='/conditiongroups/{{$.EndPoint.ID}}/delete/{{.ID}}'>                  <svg class="c-icon">
+            <use xlink:href="/static/coreui/vendors/coreui/icons/svg/free.svg#cil-trash"></use></svg></a>
+
+        </td>
+
+      </tr>
+      {{end}}
+      {{end}}
+    </tbody>
+  </table>
+
+</div>
+</div>
+</div>
+</div>
+{{end}}
+
+
+{{define "aftercontent"}}
+
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.css">
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.js"></script>
+
+<script>
+  $(document).ready(function () {
+    $('#conditiongrouplist').DataTable({
+      "language": {
+        "emptyTable": "No records."
+      }
+    });
+  });
+</script>
+{{end}}

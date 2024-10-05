@@ -1,0 +1,93 @@
+{{define "title"}}
+GoMockAPI
+{{end}}
+
+{{define "content"}}
+
+
+<div class="row p-2">
+  <div class="col">
+    <div class="card ">
+      <div class="card-header">
+        <p class="h5">Conditions
+          <a class="btn btn-ghost-info float-right" href="/conditions/{{$.EndPoint.ID}}/add">+Add</a>
+
+        </p>
+        <p><small>Add conditions based on "Request parameter". "Condition actions" use these conditions to modify the
+            response.</small></p>
+          </div>
+        <div class="card-body">
+
+
+
+          <table id="conditionlist"       
+          class="table   table-borderless table-responsive-sm table-striped    ">
+            <thead class="thead-dark">
+              <tr>
+                <th>Name</th>
+                <th><span>Variable</span></th>
+                <th>Operator</th>
+                <th><span>Compareto</span></th>
+                <th>Options</th>
+
+              </tr>
+            </thead>
+            <tbody>
+              {{if .Conditions}}
+
+              {{range .Conditions}}
+              <tr>
+
+
+                <td>{{.Name}}</td>
+
+                <td>{{.VariableName}}</td>
+                <td>{{.Operator}}</td>
+                <td>{{.Compareto}}</td>
+
+
+
+
+
+                <td>
+
+                  <a data-toggle="tooltip" data-placement="bottom" title="Edit" class="btn btn-ghost-info" href='/conditions/{{$.EndPoint.ID}}/update/{{.ID}}'>                  <svg class="c-icon">
+                    <use xlink:href="/static/coreui/vendors/coreui/icons/svg/free.svg#cil-pencil"></use></svg></a>
+
+                 
+                      
+                  <a data-toggle="tooltip" data-placement="bottom" title="Delete" class="btn btn-ghost-danger" href='/conditions/{{$.EndPoint.ID}}/delete/{{.ID}}'>                  <svg class="c-icon">
+                    <use xlink:href="/static/coreui/vendors/coreui/icons/svg/free.svg#cil-trash"></use></svg></a>
+
+                </td>
+
+              </tr>
+              {{end}}
+              {{end}}
+            </tbody>
+          </table>
+
+        </div>
+      </div>
+    </div>
+  </div>
+  {{end}}
+
+
+  {{define "aftercontent"}}
+
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.css">
+  <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.js">
+  </script>
+
+  <script>
+    $(document).ready(function () {
+      $('#conditionlist').DataTable({
+        "pageLength": 100,
+        "language": {
+          "emptyTable": "No records."
+        }
+      });
+    });
+  </script>
+  {{end}}

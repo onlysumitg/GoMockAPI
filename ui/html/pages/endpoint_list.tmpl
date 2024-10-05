@@ -1,0 +1,122 @@
+{{define "title"}}
+EndPoints
+{{end}}
+
+{{define "content"}}
+
+
+
+<div class="row p-2">
+  <div class="col">
+    <div class="card ">
+      <div class="card-header">
+        <p class="h5">EndPoints {{if .Collection}} for collection {{.Collection.Name}} {{end}}
+          <a id="addnewep" data-toggle="tooltip" data-placement="bottom" title="Add new endpoint"
+           class="btn btn-ghost-info float-right" href="/endpoints/add{{if .Collection}}?cid={{.Collection.ID}}{{end}}">+Add</a></p>
+      </div>
+      <div class="card-body">
+        <table id="endpointlist"
+          class="table   table-borderless table-responsive-sm table-striped    ">
+          <thead class="thead-dark">
+
+            <tr>
+              <th>Colletion</th>
+
+              <th>Name</th>
+              <th>Method</th>
+               
+              <th>Created</th>
+              <th>Options </th>
+
+            </tr>
+          </thead>
+          <tbody>
+            {{if .EndPoints}}
+
+            {{range .EndPoints}}
+            <tr>
+              <td>{{.CollectionID|collectionname}}</td>
+              <td>{{.Name}}</td>
+              <td>{{.Method}}</td>
+           
+
+              <td>{{.CreatedBy}} <br> {{.CreatedOn | humanDate}}</td>
+
+
+
+
+              <td>
+
+                <a data-toggle="tooltip" data-placement="bottom" title="Manage" class="btn btn-ghost-info  " 
+                href='/endpoints/update/{{.ID}}'
+                >   
+                  <svg class="c-icon">
+                  <use xlink:href="/static/coreui/vendors/coreui/icons/svg/free.svg#cil-pencil"></use>
+              </svg>
+            </a>
+
+            <a data-toggle="tooltip" data-placement="bottom" title="Make a copy" class="btn btn-ghost-info" href='/endpoints/copy/{{.ID}}'>                  <svg class="c-icon">
+              <use xlink:href="/static/coreui/vendors/coreui/icons/svg/free.svg#cil-copy"></use></svg></a>
+
+
+                <a data-toggle="tooltip" data-placement="bottom" title="delete" class="btn btn-ghost-danger  " href='/endpoints/delete/{{.ID}}'><svg class="c-icon">
+                  <use xlink:href="/static/coreui/vendors/coreui/icons/svg/free.svg#cil-trash"></use>
+              </svg></a>
+
+
+              </td>
+
+            </tr>
+            {{end}}
+            {{end}}
+          </tbody>
+        </table>
+ 
+      </div>
+    </div>
+  </div>
+</div>
+    {{end}}
+
+
+    {{define "aftercontent"}}
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.css">
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.js">
+    </script>
+
+    <script>
+      $(document).ready(function () {
+        $('#endpointlist').DataTable({
+          "pageLength": 100,
+          "language": {
+            "emptyTable": "No records."
+          }
+        });
+
+
+
+
+        {{if not .EndPoints}}
+
+
+        introJs().setOptions({
+  steps: [ 
+
+  { 
+    title:"Need a new Endpoint?",
+    element: document.querySelector('#addnewep'),
+    intro: 'Click here to add one.'
+  },
+
+
+]
+}).start();
+
+{{end}}
+      });
+    </script>
+
+
+
+    {{end}}

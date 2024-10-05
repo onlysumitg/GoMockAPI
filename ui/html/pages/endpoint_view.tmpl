@@ -1,0 +1,107 @@
+{{define "title"}}
+Endpoint detail
+{{end}}
+
+{{define "content"}}
+<br />
+<div class="px-5">
+
+    <div class="row">
+
+  
+
+        <div class="col-10">
+            <div class="row">
+                <div class="col" style="padding-bottom: 10px;">
+                    <p class="h5">EndPoint Details</p>
+                </div>
+
+            </div>
+
+
+
+            <table class="table table-bordered table-striped">
+                <tbody>
+                    <tr>
+                        <td>EndPoint ID</td>
+                        <td>{{.EndPoint.ID}}</td>
+                    </tr>
+
+                    <tr>
+                        <td>Actual URL</td>
+                        <td>{{.EndPoint.ActualURL}}</td>
+                    </tr>
+                    <tr>
+                        <td>EndPoint Name</td>
+                        <td>{{.EndPoint.Name}}</td>
+                    </tr>
+
+                    <tr>
+                        <td>EndPoint Method</td>
+                        <td>{{.EndPoint.Method}}</td>
+                    </tr>
+
+                    <tr>
+                        <td>Parsed URL</td>
+                        <td><ol>
+                            {{range $k,$v := .EndPoint.ParsedUrl}}
+                            <li>{{$k}} = {{$v}}</li>
+                            {{end}}
+                        </ol>
+                        </td>
+                    </tr>
+
+
+                    <tr>
+                        <td>Path Params</td>
+                        <td><ol>
+                            {{range $k,$v := .EndPoint.PathParams}}
+                            <li>{{$k}} = {{$v.Name}} | {{$v.Value}} | {{$v.DataType}} | {{$v.IsVariable}}</li>
+                            {{end}}
+                        </ol>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>On Hold?</td>
+                        <td>{{yesNo .EndPoint.OnHold}}</td>
+                    </tr>
+                    <tr>
+                        <td>Sample request</td>
+                        <td><textarea rows="25" cols="100">{{.EndPoint.SampleRequest}}</textarea></td>
+                    </tr>
+               
+                    <tr>
+                        <td>Sample response</td>
+                        <td><textarea rows="25" cols="100">{{.EndPoint.SampleResponse}}</textarea></td>
+                    </tr>
+
+                    <tr>
+                        <td>Response Placeholder</td>
+                        <td><textarea rows="25" cols="100">{{toJson .EndPoint.ResponsePlaceholder}}</textarea></td>
+                    </tr>
+
+                    <tr>
+                        <td>Response Header</td>
+                        <td><textarea rows="25" cols="100">{{toJson .EndPoint.SampleResponseHeader}}</textarea></td>
+                    </tr>
+
+
+                    <tr>
+                        <td>Response Header Placeholder</td>
+                        <td><textarea rows="25" cols="100">{{toJson .EndPoint.ResponseHeaderPlaceholder}}</textarea>
+                        </td>
+                    </tr>
+
+                </tbody>
+            </table>
+
+            <a class="btn btn-primary " href="/endpoints">Back to Server list</a>
+
+            <br />
+            <br />
+            <br />
+        </div>
+    </div>
+</div>
+
+{{end}}

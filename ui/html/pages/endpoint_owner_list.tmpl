@@ -1,0 +1,65 @@
+{{define "title"}}
+Owners
+{{end}}
+
+{{define "content"}}
+ 
+<div class="row p-2">
+    <div class="col">
+      <div class="card ">
+        <div class="card-header">
+          <p class="h5">Owners</p>
+        </div>
+        <div class="card-body">
+          <table id="epowners"
+            class="table   table-borderless table-responsive-sm table-striped    ">
+            <thead class="thead-dark">
+     
+            <tr>
+                <th>Email</th>
+                <th>Name</th>
+         
+         
+           
+            </tr>
+        </thead>
+        <tbody>
+            {{if .Users}}
+
+            {{range .Users}}
+            <tr>
+                <td>{{.Email}} </td>
+
+                <td>{{.Name}} </td>
+              
+      
+
+            </tr>
+            {{end}}
+            {{end}}
+        </tbody>
+    </table>
+
+</div>
+</div>
+</div>
+</div>
+{{end}}
+
+
+{{define "aftercontent"}}
+
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.css">
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $('#epowners').DataTable({
+            "pageLength": 100,
+            "language": {
+                "emptyTable": "No records."
+            }
+        });
+    });
+</script>
+{{end}}

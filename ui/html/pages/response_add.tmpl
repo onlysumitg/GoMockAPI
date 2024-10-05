@@ -1,0 +1,230 @@
+{{define "title"}}
+Response
+{{end}}
+
+
+{{define "content"}}
+
+
+
+<div class="row p-2">
+    <div class="col">
+        <div class="card ">
+            <div class="card-header">
+                <p class="h5">
+                    {{if .Form.ID}} Edit {{else}} Add {{end}} Response</p>
+            </div>
+            <div class="card-body">
+
+
+
+
+                <form action="/epr/{{.EndPoint.ID}}/{{if .Form.ID}}update/{{.Form.ID}}{{else}}add{{end}}" method="POST">
+                    <input type="hidden" name="csrf_token" value="{{.CSRFToken}}">
+                    <input type="hidden" name="id" value="{{.Form.ID}}">
+
+                    <div class="form-group">
+                        <label for="httpcode">For HTTP Code</label>
+                        
+                        
+                            <SELECT id="httpcode" name="httpcode"  class="form-control {{with .Form.FieldErrors.httpcode}} is-invalid {{end}}">
+                                {{range $code,$text :=.HttpCodes}}
+                                <OPTION {{if eq $.Form.HttpCode $code }}selected{{end}} value="{{$code}}">{{$code}}: {{httpCodeText $code}}</OPTION>
+
+                                {{end}}
+                            </SELECT>
+
+                        <!-- Use the `with` action to render the value of .Form.FieldErrors.title if it is not empty. -->
+
+                        {{with .Form.FieldErrors.httpcode}}
+                        <div class='invalid-feedback'>{{.}}</div>
+                        {{end}}
+                    </div>
+
+                    <div class="form-group">
+                        <label>Name:</label>
+
+                        <input class="form-control {{with .Form.FieldErrors.name}} is-invalid {{end}}"
+                            type='text' name='name' value='{{.Form.Name}}' required>
+                        {{with .Form.FieldErrors.name}}
+                        <div class='invalid-feedback'>{{.}}</div>
+                        {{end}}
+                        <small>Use 'DEFAULT' as name to define a default respose.</small>
+
+
+                    </div>
+
+
+
+                    <div class="row">
+                        <div class="col p-3  "  >
+                            <div class="form-group">
+                                <label for="response">Sample Response</label>
+
+
+
+
+                                     <!--   REQUEST HEADER TYPE XML od JSON   START-->
+                      <div class="alert alert-success" role="alert">
+                        <div class="row">
+                            <div class="col">
+
+                                <div class="form-check">
+                                    <input class="form-check-input {{with .Form.FieldErrors.responsetype}} is-invalid {{end}}" 
+                                    type="radio" name="responsetype" 
+                                    id="responsetypejson" 
+                                    value="JSON"
+                                    {{if or (eq .Form.ResponseType "JSON") (eq .Form.ResponseType "")}} checked {{end}} 
+                                     >
+                                    <label class="form-check-label" for="responsetypejson">
+                                      JSON
+                                    </label>
+                                    {{with .Form.FieldErrors.samplerequestheadertype}}
+                                    <div class='invalid-feedback'>{{.}}</div>
+                                    {{end}}
+                                  </div>
+                            </div>
+
+                            <div class="col">
+                                <div class="form-check">
+                                    <input class="form-check-input {{with .Form.FieldErrors.responsetype}} is-invalid {{end}}" type="radio" 
+                                    name="responsetype" id="responsetypexml" 
+                                    value="XML"
+                                    {{if eq .Form.ResponseType "XML"}} checked {{end}} 
+                                    >
+                                    <label class="form-check-label" for="responsetypexml">
+                                      XML
+                                    </label>
+                    
+                                  
+                                  </div>
+                            </div>
+                          
+                        </div>
+                    </div>
+                    <!--   REQUEST HEADER TYPE XML od JSON   END-->
+
+
+
+                  
+
+                                <textarea name="response"
+                                    class="form-control {{with .Form.FieldErrors.response}} is-invalid {{end}}"
+                                    class="form-control" id="response"
+                                    rows="10">{{.Form.Response}}</textarea>
+                                {{with .Form.FieldErrors.response}} 
+                                <div class='invalid-feedback'>{{.}}</div>
+                                {{end}}
+                            </div>
+                        </div>
+
+
+
+
+                        <div class="col p-3  "  >
+                            <div class="form-group">
+                                <label for="responseheader">Sample Response Header</label>
+                               
+
+                                <div class="alert alert-success" role="alert">
+                                    <div class="row">
+                                        <div class="col">
+                                
+                                            <div class="form-check">
+                                                <input class="form-check-input {{with .Form.FieldErrors.headertype}} is-invalid {{end}}" 
+                                                type="radio" name="headertype" 
+                                                id="headertypejson" 
+                                                value="JSON"
+                                                {{if or (eq .Form.ResponseHeaderType "JSON") (eq .Form.ResponseHeaderType "")}} checked {{end}} 
+                                                 >
+                                                <label class="form-check-label" for="headertypejson">
+                                                  JSON
+                                                </label>
+                                                {{with .Form.FieldErrors.samplerequestheadertype}}
+                                                <div class='invalid-feedback'>{{.}}</div>
+                                                {{end}}
+                                              </div>
+                                        </div>
+                                
+                                        <div class="col">
+                                            <div class="form-check">
+                                                <input class="form-check-input {{with .Form.FieldErrors.headertype}} is-invalid {{end}}" type="radio" 
+                                                name="headertype" id="headertypexml" 
+                                                value="XML"
+                                                {{if eq .Form.ResponseHeaderType "XML"}} checked {{end}} 
+                                                >
+                                                <label class="form-check-label" for="headertypexml">
+                                                  XML
+                                                </label>
+                                
+                                              
+                                              </div>
+                                        </div>
+                                      
+                                    </div>
+                                </div>
+                                <!--   REQUEST HEADER TYPE XML od JSON   END-->
+
+
+                             
+
+
+
+                                <textarea name="header"
+                                    class="form-control {{with .Form.FieldErrors.header}} is-invalid {{end}}"
+                                    class="form-control" id="header"
+                                    rows="10">{{.Form.ResponseHeader}}</textarea>
+                                {{with .Form.FieldErrors.header}}
+                                <div class='invalid-feedback'>{{.}}</div>
+                                {{end}}
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    <br />
+                    <button type="submit" class="btn btn-primary">Submit</button>
+
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{{end}}
+
+{{define "aftercontent"}}
+
+<style>
+    .container {
+        margin: 100px auto;
+    }
+</style>
+{{end}}

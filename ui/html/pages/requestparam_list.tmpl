@@ -1,0 +1,76 @@
+{{define "title"}}
+Request Parameters
+{{end}}
+
+{{define "content"}}
+<div class="row p-2">
+  <div class="col">
+      <div class="card ">
+          <div class="card-header">
+              <p class="h5">
+                  Request Parameters</p>
+          </div>
+          <div class="card-body">
+
+    
+        <table id="requestparamlist"
+        class="table   table-borderless table-responsive-sm table-striped    ">
+        <thead class="thead-dark">
+      
+          <tr>
+            <th>Key</th>
+            <th><span>Default Value</span></th>
+            <th>Override Value </th>
+            <th><span>Default Datatype</span></th>
+
+          </tr>
+        </thead>
+        <tbody>
+          {{if .RequestParams}}
+
+          {{range .RequestParams}}
+          <tr>
+
+
+            <td>{{.Key}}</td>
+
+            <td>{{.DefaultValue}}</td>
+            <td>{{.OverrideValue}}</td>
+            <td>{{.DefaultDatatype}}</td>
+
+
+
+
+
+
+
+          </tr>
+          {{end}}
+          {{end}}
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+  </div>
+</div>
+ 
+{{end}}
+
+
+{{define "aftercontent"}}
+
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.css">
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.js"></script>
+
+<script>
+  $(document).ready(function () {
+    $('#requestparamlist').DataTable({
+      "pageLength": 100,
+      "language": {
+        "emptyTable": "No records."
+      }
+    });
+  });
+</script>
+{{end}}

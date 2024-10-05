@@ -1,0 +1,92 @@
+{{define "title"}}
+Responses
+{{end}}
+
+{{define "content"}}
+
+
+<div class="row p-2">
+  <div class="col">
+    <div class="card ">
+      <div class="card-header">
+        <p class="h5">Responses 
+          <a class="btn btn-ghost-info float-right" href="/epr/{{$.EndPoint.ID}}/add">+Add</a>
+
+        </p>
+        <small>Use 'DEFAULT' as name to define a default respose.</small>
+          </div>
+        <div class="card-body">
+
+
+
+          <table id="responselist"       
+          class="table   table-borderless table-responsive-sm table-striped    ">
+            <thead class="thead-dark">
+              <tr>
+                <th>Http Code</th>
+                <th>Text</th>
+                <th>Name</th>
+
+                <th>Options</th>
+
+              </tr>
+            </thead>
+            <tbody>
+              {{if .EndPointResponses}}
+
+              {{range .EndPointResponses}}
+              <tr>
+
+
+                <td>{{.HttpCode}}</td>
+
+                <td>{{httpCodeText  .HttpCode}}</td>
+                <td>{{.Name}}</td>
+
+                <td>
+
+                  <a data-toggle="tooltip" data-placement="bottom" title="Edit" class="btn btn-ghost-info" href='/epr/{{$.EndPoint.ID}}/update/{{.ID}}'>                  <svg class="c-icon">
+                    <use xlink:href="/static/coreui/vendors/coreui/icons/svg/free.svg#cil-pencil"></use></svg></a>
+
+                 
+                      
+                  <a data-toggle="tooltip" data-placement="bottom" title="Delete" class="btn btn-ghost-danger" href='/epr/{{$.EndPoint.ID}}/delete/{{.ID}}'>                  <svg class="c-icon">
+                    <use xlink:href="/static/coreui/vendors/coreui/icons/svg/free.svg#cil-trash"></use></svg></a>
+
+
+                    <a data-toggle="tooltip" data-placement="bottom" title="Response parameters" class="btn btn-ghost-info" href='/responseparam/{{$.EndPoint.ID}}/{{.ID}}/'>                  <svg class="c-icon">
+                      <use xlink:href="/static/coreui/vendors/coreui/icons/svg/free.svg#cil-list"></use></svg></a>
+  
+                   
+                </td>
+
+              </tr>
+              {{end}}
+              {{end}}
+            </tbody>
+          </table>
+
+        </div>
+      </div>
+    </div>
+  </div>
+  {{end}}
+
+
+  {{define "aftercontent"}}
+
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.css">
+  <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.js">
+  </script>
+
+  <script>
+    $(document).ready(function () {
+      $('#responselist').DataTable({
+        "pageLength": 100,
+        "language": {
+          "emptyTable": "No records."
+        }
+      });
+    });
+  </script>
+  {{end}}

@@ -1,0 +1,55 @@
+{{define "title"}}
+Upload
+{{end}}
+
+{{define "content"}}
+
+
+<div class="row p-2">
+  <div class="col">
+    <div class="card ">
+      <div class="card-header">
+        <p class="h5">
+        Upload Postman JSON
+        </p>
+      </div>
+      <div class="card-body">
+
+
+
+        <form id="form" enctype="multipart/form-data" action="/postman/upload" method="POST">
+          <input  class="form-control input file-input" type="file" name="file" multiple />
+          <br />
+          <button  class="btn btn-primary" type="submit">Submit</button>
+        </form>
+       
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="row p-2">
+  <div class="col">
+    <div class="card ">
+      <div class="card-header">
+        <p class="h5">
+        Download from Web
+        </p>
+      </div>
+      <div class="card-body">
+
+
+
+        <form id="form"  action="/postman/webget" method="POST">
+          <input  class="form-control" type="url" name="url"  placeholder="url" />
+          <br />
+          <button  class="btn btn-primary" type="submit">Submit</button>
+        </form>
+       
+      </div>
+    </div>
+  </div>
+</div>
+{{end}}
